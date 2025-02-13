@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
+from django.views.generic import ListView
 from .models import Post
 import sys
 
@@ -14,6 +15,17 @@ def printError(e):
     error_msg = f"Error Type: {error_type}\nError Name: {error_name}\nLine where error occurred: {line_number}"
  
     print(error_msg)
+
+class PostListView(ListView):
+
+    """
+    Alternative post list view
+    """
+    queryset = Post.published.all()
+    context_object_name = 'posts'
+    paginate_by = 3
+    template_name = 'list.html'
+
 
 def post_list(request):
     try:
