@@ -25,40 +25,7 @@ class PostListView(ListView):
     context_object_name = 'posts'
     paginate_by = 3
     template_name = 'list.html'
-
-
-def post_list(request):
-    try:
-        post_list = Post.published.all()
-        
-        # Pagination with 3 posts per page
-        paginator = Paginator(post_list,3)
-        page_number = request.GET.get('page')
-        
-        try:
-            posts = paginator.page(page_number)
-        except PageNotAnInteger:
-            # If page_number is not an integer get the first page
-            posts = paginator.page(1)
-        except EmptyPage:
-            # If page_number is out of range get last page of result
-            posts = paginator.page(paginator.num_pages)
-
-        return render(
-            request,
-            'list.html',
-            {'posts': posts}
-        )
     
-    except Exception as e:
-        printError(e)
-        render(
-            request,
-            'list.html',
-            {'posts': posts}
-        )
-
-
 def post_detail(request, year, month, day, post):
     try:
         post = get_object_or_404(
